@@ -1,24 +1,53 @@
-# README
+## Betches
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Betting Management Simplied.
 
-Things you may want to cover:
+#### Version
 
-* Ruby version
+```
+  Ruby 2.6.3
+  Rails 5.2.3
+  Postgres 10.4
+```
 
-* System dependencies
+#### Installation
 
-* Configuration
+```
+$ git clone git@github.com:akosipc/shiny-octo-spoon.git
+$ cd shiny-octo-spoon
+```
 
-* Database creation
+#### Starting the application
 
-* Database initialization
+```
+$ bundle exec rails server
+```
 
-* How to run the test suite
+#### Database creation
 
-* Services (job queues, cache servers, search engines, etc.)
+```
+$ rake db:create db:migrate db:test:prepare
+```
 
-* Deployment instructions
+#### How to run the test suite
 
-* ...
+```
+$ rspec spec
+```
+
+#### Tasks before launching
+- [ ] Architecture
+  - [x] Betches
+  - [x] Bettables
+  - [ ] Bets
+  - [ ] Users
+- [ ] Features
+  - [ ] Devise
+  - [ ] Create a Betch
+    - [ ] Import from Challonge Tournament
+  - [ ] Create a Bettable
+    - [x] Auto Calculate Odds
+    - [ ] Convert Odds to Different Formats
+  - [ ] Create a Bet
+    - [ ] Stripe Processing
+    - [ ] GWX Processing
