@@ -39,36 +39,47 @@ class OddCalculator
   end
 
   def seeded_odds
+    median_at = (@collection.length / 2.0).round
     median = 100 / @collection.length.to_f 
-    divided_collection = @collection.each_slice((@collection.length / 2.0).round).to_a
+    divided_collection = @collection.each_slice(median_at).to_a
 
     do_seeded_odds({
+      start_at_median: divided_collection[0].length.odd?,
+      incrementor: incrementor(median, median_at),
       collection: divided_collection[0].reverse,
       operation: "+",
-      prev_odds: @collection.length % 2 == 0 ? median : 0,
       median: median,
       acc: []
-    }).reverse + 
-    do_seeded_odds({
+    }).reverse + do_seeded_odds({
+      start_at_median: divided_collection[1].length.odd?,
+      incrementor: incrementor(median, median_at),
       collection: divided_collection[1],
       operation: "-",
-      prev_odds: @collection.length % 2 == 0 ? 0 : median,
       median: median,
       acc: []
     })
   end
 
-  def do_seeded_odds(collection:, operation:, prev_odds:, median:, acc:)
+  def do_seeded_odds(start_at_median: false, incrementor:, collection:, operation:, median:, acc:)
     return acc if collection.empty?
 
-    acc << Participant.for(collection.shift, prev_odds.zero? ? median : median.send(operation, (prev_odds / 2)))
+    if start_at_median
+      acc << Participant.for(collection.shift, median)
+    else
+      acc << Participant.for(collection.shift, median.send(operation, incrementor))
+    end
 
     do_seeded_odds({
+      incrementor: incrementor,
       collection: collection,
       operation: operation,
-      prev_odds: acc.last.odds,
-      median: median,
+      median: acc[-1].odds,
       acc: acc
     })
+  end
+
+  def incrementor(median, divisor)
+    top_value = median + (median / 2)
+    (top_value - median) / (divisor - 1)
   end
 end

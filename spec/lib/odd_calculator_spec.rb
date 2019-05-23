@@ -35,12 +35,11 @@ RSpec.describe OddCalculator, type: :lib do
         expect(result).to be_instance_of Array
 
         expect(result[0]).to be_instance_of Participant
-        expect(result[0].name).to eq "A"
-        expect(result[0].odds).to eq 35.00
-        expect(result[1].odds).to eq 30.00
-        expect(result[2].odds).to eq 20.00
-        expect(result[3].odds).to eq 10.00
-        expect(result[4].odds).to eq 5.00
+        expect(result[0].odds).to eq 30
+        expect(result[1].odds).to eq 25
+        expect(result[2].odds).to eq 20
+        expect(result[3].odds).to eq 15
+        expect(result[4].odds).to eq 10
       end
     end
 
@@ -49,13 +48,18 @@ RSpec.describe OddCalculator, type: :lib do
 
       it 'calculate the odds based on the seed level that was given' do
         result = lib.calculate(:seeded_odds)
-  
-        expect(result).to be_instance_of Array
 
-        expect(result[2]).to be_instance_of Participant
-        expect(result[2].name).to eq "C"
-        expect(result[3]).to be_instance_of Participant
-        expect(result[3].name).to eq "D"
+        expect(result).to be_instance_of Array
+        expect(result.sum(&:odds).to_i).to eq 100
+
+        expect(result[0].name).to eq 'A'
+        expect(result[2].name).to eq 'C'
+        expect(result[3].name).to eq 'D'
+        expect(result[5].name).to eq 'F'
+        expect(result[0].odds).to eq 25.0
+        expect(result[2].odds).to eq 16.666666666666668
+        expect(result[3].odds).to eq 16.666666666666668
+        expect(result[5].odds).to eq 8.333333333333336
       end
     end
 
@@ -66,8 +70,14 @@ RSpec.describe OddCalculator, type: :lib do
         result = lib.calculate(:seeded_odds)
 
         expect(result).to be_instance_of Array
+        expect(result.sum(&:odds)).to eq 100
 
-        puts result.to_yaml
+        expect(result[0].name).to eq 'A'
+        expect(result[4].name).to eq 'E'
+        expect(result[8].name).to eq 'I'
+        expect(result[0].odds).to eq 16.666666666666668
+        expect(result[4].odds).to eq 11.11111111111111
+        expect(result[8].odds).to eq 5.555555555555555
       end
     end
   end
