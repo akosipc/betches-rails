@@ -27,12 +27,22 @@ class OddCalculator
     @options = options
   end
 
-  def calculate
+  def calculate(format = :even_odds)
+    send(format)
+  end
+
+  private
+
+  def even_odds
     @collection.map.with_index do |item, index|
       p = Participant.for(item, index)
       p.odds = @collection.length.to_f
 
       p
     end
+  end
+
+  def seeded_odds
+    []
   end
 end
